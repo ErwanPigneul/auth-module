@@ -92,6 +92,10 @@ export function normalizePath(path = '', ctx?: Context): string {
     result = result.replace(ctx.base, '/')
   }
 
+  // Normalize locale-specific paths (e.g., remove /pt/ prefix)
+  // Assumption: locales are two letters long, adapt the regex if necessary
+  result = result.replace(/^\/[a-z]{2}\//, '/');
+
   // Remove redundant / from the end of path
   if (result.charAt(result.length - 1) === '/') {
     result = result.slice(0, -1)
