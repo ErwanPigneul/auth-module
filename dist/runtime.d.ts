@@ -358,7 +358,7 @@ declare class IdToken {
     private _updateExpiration;
     private _setToken;
     private _syncToken;
-    userInfo(): any;
+    userInfo(): unknown;
 }
 
 type RecursivePartial<T> = {
