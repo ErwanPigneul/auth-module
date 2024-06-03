@@ -1516,6 +1516,7 @@ class Oauth2Scheme extends BaseScheme {
         codeVerifier = this.$auth.$storage.getUniversal(this.name + ".pkce_code_verifier");
         this.$auth.$storage.setUniversal(this.name + ".pkce_code_verifier", null);
       }
+      let redirectURI = this.redirectURI.replace(this.$auth.options.redirect.callback, this.$auth.ctx.route.path);
       const response = await this.$auth.request({
         method: "post",
         url: this.options.endpoints.token,
@@ -1523,7 +1524,7 @@ class Oauth2Scheme extends BaseScheme {
         data: encodeQuery({
           code: parsedQuery.code,
           client_id: this.options.clientId + "",
-          redirect_uri: this.redirectURI,
+          redirect_uri: redirectURI,
           response_type: this.options.responseType,
           audience: this.options.audience,
           grant_type: this.options.grantType,

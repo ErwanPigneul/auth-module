@@ -38,19 +38,19 @@ export interface Oauth2SchemeEndpoints extends EndpointsOption {
 
 export interface Oauth2SchemeOptions
   extends SchemeOptions,
-    TokenableSchemeOptions,
-    RefreshableSchemeOptions {
+  TokenableSchemeOptions,
+  RefreshableSchemeOptions {
   endpoints: Oauth2SchemeEndpoints
   user: UserOptions
   responseMode: 'query.jwt' | 'fragment.jwt' | 'form_post.jwt' | 'jwt'
   responseType: 'code' | 'token' | 'id_token' | 'none' | string
   grantType:
-    | 'implicit'
-    | 'authorization_code'
-    | 'client_credentials'
-    | 'password'
-    | 'refresh_token'
-    | 'urn:ietf:params:oauth:grant-type:device_code'
+  | 'implicit'
+  | 'authorization_code'
+  | 'client_credentials'
+  | 'password'
+  | 'refresh_token'
+  | 'urn:ietf:params:oauth:grant-type:device_code'
   accessType: 'online' | 'offline'
   redirectUri: string
   logoutRedirectUri: string
@@ -104,11 +104,10 @@ const DEFAULTS: SchemePartialOptions<Oauth2SchemeOptions> = {
 }
 
 export class Oauth2Scheme<
-    OptionsT extends Oauth2SchemeOptions = Oauth2SchemeOptions
-  >
+  OptionsT extends Oauth2SchemeOptions = Oauth2SchemeOptions
+>
   extends BaseScheme<OptionsT>
-  implements RefreshableScheme
-{
+  implements RefreshableScheme {
   public req
   public token: Token
   public refreshToken: RefreshToken
@@ -342,7 +341,7 @@ export class Oauth2Scheme<
     if (
       this.$auth.options.redirect &&
       normalizePath(this.$auth.ctx.route.path, this.$auth.ctx) !==
-        normalizePath(this.$auth.options.redirect.callback, this.$auth.ctx)
+      normalizePath(this.$auth.options.redirect.callback, this.$auth.ctx)
     ) {
       return
     }
@@ -387,6 +386,8 @@ export class Oauth2Scheme<
         )
       }
 
+      let redirectURI = this.redirectURI.replace(this.$auth.options.redirect.callback, this.$auth.ctx.route.path);
+
       const response = await this.$auth.request({
         method: 'post',
         url: this.options.endpoints.token,
@@ -394,7 +395,7 @@ export class Oauth2Scheme<
         data: encodeQuery({
           code: parsedQuery.code as string,
           client_id: this.options.clientId + '',
-          redirect_uri: this.redirectURI,
+          redirect_uri: redirectURI,
           response_type: this.options.responseType,
           audience: this.options.audience,
           grant_type: this.options.grantType,

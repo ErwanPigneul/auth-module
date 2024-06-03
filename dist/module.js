@@ -215,6 +215,7 @@ function discord(nuxt, strategy) {
     scope: ["identify", "email"]
   };
   assignDefaults(strategy, DEFAULTS);
+  addAuthorize(nuxt, strategy, true);
 }
 
 function facebook(_nuxt, strategy) {

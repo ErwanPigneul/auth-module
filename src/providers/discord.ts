@@ -4,7 +4,7 @@ import { assignDefaults, addAuthorize } from '../utils/provider'
 
 export interface DiscordProviderOptions
   extends ProviderOptions,
-    Oauth2SchemeOptions {}
+  Oauth2SchemeOptions { }
 
 export function discord(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
@@ -26,5 +26,5 @@ export function discord(
 
   assignDefaults(strategy, DEFAULTS)
 
-  //addAuthorize(nuxt, strategy, true)
+  addAuthorize(nuxt, strategy, true)
 }
